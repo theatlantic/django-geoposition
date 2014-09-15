@@ -1,19 +1,22 @@
 from __future__ import unicode_literals
 
+import copy
 import json
 from django import forms
 from django.template.loader import render_to_string
 from django.utils import six
 from django.utils.translation import ugettext_lazy as _
-from .conf import settings
+from .conf import DEFAULT_CONFIG
 
 
 class GeopositionWidget(forms.MultiWidget):
-    def __init__(self, attrs=None):
+    def __init__(self, attrs=None, config=None):
         widgets = (
             forms.TextInput(),
             forms.TextInput(),
         )
+        self.config = copy.deepcopy(DEFAULT_CONFIG)
+        self.config.update(config)
         super(GeopositionWidget, self).__init__(widgets, attrs)
 
     def decompress(self, value):
@@ -24,6 +27,12 @@ class GeopositionWidget(forms.MultiWidget):
         return [None,None]
 
     def format_output(self, rendered_widgets):
+        serialized_config = {}
+        for k, v in self.config.iteritems():
+            if not isinstance(v, (long, int, six.text_type, float, bool)):
+                v = json.dumps(v)
+            serialized_config[k] = v
+
         return render_to_string('geoposition/widgets/geoposition.html', {
             'latitude': {
                 'html': rendered_widgets[0],
@@ -33,11 +42,7 @@ class GeopositionWidget(forms.MultiWidget):
                 'html': rendered_widgets[1],
                 'label': _("longitude"),
             },
-            'config': {
-                'map_widget_height': settings.GEOPOSITION_MAP_WIDGET_HEIGHT,
-                'map_options': json.dumps(settings.GEOPOSITION_MAP_OPTIONS),
-                'marker_options': json.dumps(settings.GEOPOSITION_MARKER_OPTIONS),
-            }
+            'config': serialized_config,
         })
 
     class Media:

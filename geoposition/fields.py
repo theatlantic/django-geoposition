@@ -1,11 +1,14 @@
 from __future__ import unicode_literals
 
+import copy
+
 from django.db import models
 from django.utils.six import with_metaclass
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import smart_text
 
 from . import Geoposition
+from .conf import DEFAULT_CONFIG
 from .forms import GeopositionField as GeopositionFormField
 
 
@@ -14,6 +17,8 @@ class GeopositionField(with_metaclass(models.SubfieldBase, models.Field)):
 
     def __init__(self, *args, **kwargs):
         kwargs['max_length'] = 42
+        self.config = copy.deepcopy(DEFAULT_CONFIG)
+        self.config.update(kwargs.pop('config', {}))
         super(GeopositionField, self).__init__(*args, **kwargs)
 
     def get_internal_type(self):
@@ -49,7 +54,8 @@ class GeopositionField(with_metaclass(models.SubfieldBase, models.Field)):
 
     def formfield(self, **kwargs):
         defaults = {
-            'form_class': GeopositionFormField
+            'form_class': GeopositionFormField,
+            'config': self.config,
         }
         defaults.update(kwargs)
         return super(GeopositionField, self).formfield(**defaults)
