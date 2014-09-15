@@ -13,11 +13,18 @@ from .conf import settings
 class GeopositionWidget(forms.MultiWidget):
     template_name = 'geoposition/widgets/geoposition.html'
 
-    def __init__(self, attrs=None):
+    def __init__(self, attrs=None, config=None):
         widgets = (
             forms.TextInput(),
             forms.TextInput(),
         )
+        config = config or {}
+        self._config = {}
+        for k, v in six.iteritems(config):
+            if isinstance(v, six.integer_types + six.string_types + (float, bool)):
+                self._config[k] = v
+            else:
+                self._config[k] = json.dumps(v)
         super(GeopositionWidget, self).__init__(widgets, attrs)
 
     def decompress(self, value):
@@ -28,12 +35,13 @@ class GeopositionWidget(forms.MultiWidget):
         return [None, None]
 
     def get_config(self):
-        return {
+        config = {
             'map_widget_height': settings.MAP_WIDGET_HEIGHT or 500,
             'map_options': json.dumps(settings.MAP_OPTIONS),
             'marker_options': json.dumps(settings.MARKER_OPTIONS),
         }
-
+        config.update(self._config)
+        return config
 
     def get_context(self, name, value, attrs):
         # Django 1.11 and up

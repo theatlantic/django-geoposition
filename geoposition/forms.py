@@ -13,7 +13,8 @@ class GeopositionField(forms.MultiValueField):
     }
 
     def __init__(self, *args, **kwargs):
-        self.widget = GeopositionWidget()
+        self.config = kwargs.pop('config', None) or {}
+        self.widget = GeopositionWidget(config=self.config)
         fields = (
             forms.DecimalField(label=_('latitude')),
             forms.DecimalField(label=_('longitude')),

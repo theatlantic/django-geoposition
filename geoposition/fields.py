@@ -14,6 +14,7 @@ class GeopositionField(models.Field):
 
     def __init__(self, *args, **kwargs):
         kwargs['max_length'] = 42
+        self.config = kwargs.pop('config', None) or {}
         super(GeopositionField, self).__init__(*args, **kwargs)
 
     def get_internal_type(self):
@@ -52,7 +53,8 @@ class GeopositionField(models.Field):
 
     def formfield(self, **kwargs):
         defaults = {
-            'form_class': GeopositionFormField
+            'form_class': GeopositionFormField,
+            'config': self.config,
         }
         defaults.update(kwargs)
         return super(GeopositionField, self).formfield(**defaults)
