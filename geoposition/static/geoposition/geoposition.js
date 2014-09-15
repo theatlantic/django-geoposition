@@ -1,7 +1,7 @@
-if (jQuery != undefined) {
+if (typeof jQuery != 'undefined' && typeof django == 'undefined') {
     var django = {
         'jQuery': jQuery,
-    }
+    };
 }
 
 
@@ -10,25 +10,32 @@ if (jQuery != undefined) {
     $(document).ready(function() {
 
         try {
-            var _ = google;
+            google;
         } catch (ReferenceError) {
             console.log('geoposition: "google" not defined.  You might not be connected to the internet.');
             return;
         }
 
-        var mapDefaults = {
-            'mapTypeId': google.maps.MapTypeId.ROADMAP,
-            'scrollwheel': false,
-            'streetViewControl': false,
-            'panControl': false
-        };
-
-        var markerDefaults = {
-            'draggable': true,
-            'animation': google.maps.Animation.DROP
-        };
-
         $('.geoposition-widget').each(function() {
+            $(this).geopositionWidget();
+        });
+
+    });
+
+    var mapDefaults = {
+        'mapTypeId': google.maps.MapTypeId.ROADMAP,
+        'scrollwheel': false,
+        'streetViewControl': false,
+        'panControl': false
+    };
+
+    var markerDefaults = {
+        'draggable': true,
+        'animation': google.maps.Animation.DROP
+    };
+
+    $.fn.geopositionWidget = function() {
+        return this.filter(function() {
             var $container = $(this),
                 $mapContainer = $('<div class="geoposition-map" />'),
                 $addressRow = $('<div class="geoposition-address" />'),
@@ -46,6 +53,15 @@ if (jQuery != undefined) {
                 markerCustomOptions,
                 marker;
 
+            if ($latitudeField.attr('id').indexOf('__prefix__') >= 0) {
+                return false;
+            }
+            if ($latitudeField.attr('id').indexOf('-empty') >= 0) {
+                return false;
+            }
+            if ($container.data('geoposition')) {
+                return false;
+            }
             $mapContainer.css('height', $container.attr('data-map-widget-height') + 'px');
             mapCustomOptions = JSON.parse($container.attr('data-map-options'));
             markerCustomOptions = JSON.parse($container.attr('data-marker-options'));
@@ -162,6 +178,14 @@ if (jQuery != undefined) {
                 marker.setPosition(center);
                 doGeocode();
             });
+
+            $container.data('geoposition', {
+                'map': map,
+                'marker': marker,
+            });
+
+            return true;
         });
-    });
-})(django.jQuery);
+    };
+
+})((typeof grp == 'object' && grp.jQuery) ? grp.jQuery : django.jQuery);
