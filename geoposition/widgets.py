@@ -5,9 +5,26 @@ import json
 from django import forms
 from django.template.loader import render_to_string
 from django.utils import six
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 from .conf import settings
+
+
+class GeopositionLabeledTextInput(forms.TextInput):
+
+    def __init__(self, *args, **kwargs):
+        self.verbose_name = kwargs.pop('verbose_name')
+        super(GeopositionLabeledTextInput, self).__init__(*args, **kwargs)
+
+    def render(self, name, value, attrs=None):
+        input_html = super(GeopositionLabeledTextInput, self).render(name, value, attrs)
+        html = '<label for="%(id)s">%(verbose_name)s</label>%(input_html)s' % {
+            'id': "id_%s" % name,
+            'verbose_name': self.verbose_name.title(),
+            'input_html': input_html,
+        }
+        return mark_safe(html)
 
 
 class GeopositionWidget(forms.MultiWidget):
@@ -15,8 +32,8 @@ class GeopositionWidget(forms.MultiWidget):
 
     def __init__(self, attrs=None, config=None):
         widgets = (
-            forms.TextInput(),
-            forms.TextInput(),
+            GeopositionLabeledTextInput(verbose_name=_("latitude")),
+            GeopositionLabeledTextInput(verbose_name=_("longitude")),
         )
         config = config or {}
         self._config = {}

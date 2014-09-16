@@ -1,24 +1,18 @@
 <div class="geoposition-widget" data-map-widget-height="{{ config.map_widget_height }}" data-map-options="{{ config.map_options }}" data-marker-options="{{ config.marker_options }}">
-    <table>
-        <tr>
-            <td>{{ latitude.label|capfirst }}</td>
-            <td>
-                {% if latitude.widget %}
-                    {% include latitude.widget.template_name with widget=latitude.widget %}
-                {% else %}
-                    {{ latitude.html }}
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <td>{{ longitude.label|capfirst }}</td>
-            <td>
-                {% if longitude.widget %}
-                    {% include longitude.widget.template_name with widget=longitude.widget %}
-                {% else %}
-                    {{ longitude.html }}
-                {% endif %}
-            </td>
-        </tr>
-    </table>
+    <div class="geoposition-widget-inner">
+        <div class="geoposition-input-wrapper geoposition-latitude-input-wrapper">
+            {% if latitude.widget %}
+                {% include latitude.widget.template_name with widget=latitude.widget %}
+            {% else %}
+                {{ latitude.html }}
+            {% endif %}
+        </div>
+        <div class="geoposition-input-wrapper geoposition-longitude-input-wrapper">
+            {% if longitude.widget %}
+                {% include longitude.widget.template_name with widget=longitude.widget %}
+            {% else %}
+                {{ longitude.html }}
+            {% endif %}
+        </div>
+    </div>
 </div>

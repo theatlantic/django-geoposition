@@ -136,7 +136,8 @@ if (typeof jQuery != 'undefined' && typeof django == 'undefined') {
                 $(this).parent().find('ul.geoposition-results').remove();
             });
             $searchInput.appendTo($searchRow);
-            $container.append($searchRow, $mapContainer, $addressRow);
+            $container.prepend($searchRow);
+            $container.append($mapContainer, $addressRow);
 
             mapLatLng = new google.maps.LatLng(latitude, longitude);
 

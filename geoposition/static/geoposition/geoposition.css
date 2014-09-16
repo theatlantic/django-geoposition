@@ -1,32 +1,39 @@
-.geoposition-widget {
-    overflow: hidden;
-}
-
 .geoposition-map {
     position: relative;
     margin: 6px 0;
     clear: both;
 }
 
-.geoposition-widget table {
-    float: left;
+.geoposition-widget .geoposition-widget-inner {
+    float: right;
     border: 0;
     margin-bottom: 8px;
 }
 
-.geoposition-widget td {
-    border: 0;
-    padding: 0;
-    padding-right: 5px;
-    vertical-align: middle;
+.geoposition-widget .geoposition-input-wrapper {
+    display: block;
+    float: left;
+}
+
+.geoposition-widget .geoposition-input-wrapper label {
+    float: left;
+    width: 55px;
+}
+
+.geoposition-widget input.geoposition {
+    margin-right: 8px;
+    width: 120px;
 }
 
 .geoposition-search {
     width: 30%;
+    min-width: 220px;
+    margin-bottom: 8px;
 }
 
 .geoposition-search input {
     width: 100%;
+    font-size: 16px;
 }
 
 .geoposition-address {
@@ -35,7 +42,7 @@
 }
 
 .geoposition-search {
-    float: right;
+    float: left;
     text-align: left;
 }
 
