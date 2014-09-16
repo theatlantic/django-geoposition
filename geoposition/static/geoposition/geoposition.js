@@ -145,6 +145,8 @@ if (typeof jQuery != 'undefined' && typeof django == 'undefined') {
 
             if (!(latitude === null && longitude === null && mapOptions['center'])) {
                 mapOptions['center'] = mapLatLng;
+            } else if ($.isArray(mapOptions['center']) && mapOptions['center'].length == 2) {
+                mapOptions['center'] = new google.maps.LatLng(mapOptions.center[0], mapOptions.center[1]);
             }
 
             if (!mapOptions['zoom']) {
