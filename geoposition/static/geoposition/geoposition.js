@@ -149,8 +149,19 @@ if (typeof jQuery != 'undefined' && typeof django == 'undefined') {
                 mapOptions['center'] = new google.maps.LatLng(mapOptions.center[0], mapOptions.center[1]);
             }
 
+            if (!mapOptions['minZoom']) {
+                mapOptions['minZoom'] = 1;
+            }
+            if (!mapOptions['maxZoom']) {
+                mapOptions['maxZoom'] = 15;
+            }
+
+            if (!mapOptions['initialZoom']) {
+                mapOptions['initialZoom'] = mapOptions['minZoom'];
+            }
+
             if (!mapOptions['zoom']) {
-                mapOptions['zoom'] = latitude && longitude ? 15 : 1;
+                mapOptions['zoom'] = (latitude && longitude) ? mapOptions.maxZoom : mapOptions.initialZoom;
             }
 
             map = new google.maps.Map($mapContainer.get(0), mapOptions);
