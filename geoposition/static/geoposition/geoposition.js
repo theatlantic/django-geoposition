@@ -161,8 +161,8 @@ if (typeof jQuery != 'undefined' && typeof django == 'undefined') {
 
             marker = new google.maps.Marker(markerOptions);
             google.maps.event.addListener(marker, 'dragend', function() {
-                $latitudeField.val(this.position.lat());
-                $longitudeField.val(this.position.lng());
+                $latitudeField.val(this.position.lat().toFixed(7));
+                $longitudeField.val(this.position.lng().toFixed(7));
                 doGeocode();
             });
             if ($latitudeField.val() && $longitudeField.val()) {
