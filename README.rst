@@ -4,15 +4,20 @@ django-geoposition
 
 A model field that can hold a geoposition (latitude/longitude), and corresponding admin/form widget.
 
-.. image:: https://badge.fury.io/py/django-geoposition.svg
-   :target: https://badge.fury.io/py/django-geoposition
+Testing
+-------
 
-.. image:: https://travis-ci.org/philippbosch/django-geoposition.svg?branch=master
-   :target: https://travis-ci.org/philippbosch/django-geoposition
+Use `pyenv` is recommended.
 
-.. image:: https://badges.gitter.im/philippbosch/django-geoposition.svg
-   :alt: Join the chat at https://gitter.im/philippbosch/django-geoposition
-   :target: https://gitter.im/philippbosch/django-geoposition?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+    pyenv local 3.7.3 2.7.18  # or whatever versions you have
+    python3 -m venv venv
+    . venv/bin/activate
+    python -m pip install tox tox-pyenv
+    tox
+
+To test a specific environment:
+
+    # tox -e py3-dj20 
 
 Prerequisites
 -------------

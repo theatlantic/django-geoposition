@@ -1,9 +1,12 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import url
 from django.contrib import admin
+
+import example.views
 
 admin.autodiscover()
 
-urlpatterns = patterns('',
-    url(r'^$', 'example.views.poi_list'),
-    url(r'^admin/', include(admin.site.urls)),
-)
+
+urlpatterns = [
+    url(r'^$', example.views.poi_list),
+    url(r'^admin/', admin.site.urls),
+]

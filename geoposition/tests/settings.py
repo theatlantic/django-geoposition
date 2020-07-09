@@ -5,7 +5,21 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '+*mac$-+vop%1#8zp%)blgacvst%fm)p$&u#p!5(x5nv9c0955'
 
 DEBUG = True
-TEMPLATE_DEBUG = True
+
+TEMPLATES = [{
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+    'OPTIONS': {
+        'loaders': (
+            'django.template.loaders.filesystem.Loader',
+            'django.template.loaders.app_directories.Loader',
+        ),
+        'context_processors': (
+            'django.template.context_processors.debug',
+            'django.contrib.auth.context_processors.auth',
+            'django.contrib.messages.context_processors.messages',
+        )
+    }
+}]
 
 ALLOWED_HOSTS = []
 
@@ -20,7 +34,7 @@ INSTALLED_APPS = (
     'example',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
